@@ -8,6 +8,7 @@ __license__ = "MIT"
 import unittest
 import os
 from datetime import datetime, timedelta
+from directory_analyzer import print_dir_summary
 
 
 def datetime_calculator():
@@ -70,9 +71,15 @@ class FileOpsTest(unittest.TestCase):
         expected_result = ('John ', ' Doe ', ' 102000 ', ' Age: 36 ', ' NJ')
         self.assertEqual(next(file_reader('test_file_reader.txt', 5, '|', True)), expected_result)
 
+
 if __name__ == "__main__":
     ''' This is executed when run from the command line '''
 
-    # datetime_calculator()
+    print("\n\n************************* Problem 1 ******************************\n\n")
+    datetime_calculator()
     
+    print("\n\n************************* Problem 3 ******************************\n\n")
+    print_dir_summary(os.getcwd())
+    
+    print("\n\n************************* Unit Tests ******************************\n\n")
     unittest.main(exit=False, verbosity=2)
