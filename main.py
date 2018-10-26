@@ -6,6 +6,7 @@ __version__ = "0.1.0"
 __license__ = "MIT"
 
 import unittest
+import os
 from datetime import datetime, timedelta
 
 def datetime_calculator():
@@ -29,8 +30,32 @@ def datetime_calculator():
     print("{} days passed between Jan 1, 2017 and Oct 31, 2017".format(date_diff.days))
 
 
+def file_reader(path, field_num, sep, header=False):
+    ''' a generator function to read text files and return all of the values on a single line on each call to next() '''
+
+    try:
+        fp = open(path, 'r')
+    except FileNotFoundError:
+        print("\n\nError while opening {} for reading".format(os.path.basename(path)))
+    else:
+        with fp:
+            # skip the first line if header is true
+            if header: 
+                next(fp)
+            for line_num, line  in enumerate(fp):
+                fields = line.strip().split(sep)
+                if (len(fields) < field_num):
+                    raise ValueError('\n\n {} has {} fields on line {} but expected {}'.format(os.path.basename(path), len(fields), line_num + 1, field_num))
+                else:
+                    yield tuple(fields)  
+
+
 if __name__ == "__main__":
     ''' This is executed when run from the command line '''
 
-    datetime_calculator()
-    unittest.main(exit=False, verbosity=2)
+    # datetime_calculator()
+    
+    for fields in file_reader('test_file_reader.txt', 5, '|'):
+        print(fields)
+    
+    # unittest.main(exit=False, verbosity=2)

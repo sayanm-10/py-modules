@@ -1,0 +1,3 @@
+John | Doe | 102000 | Age: 36 | NJ
+Jane | Dow | 120000 | NY
+Jane | Eyre | Age: 35 | MI
