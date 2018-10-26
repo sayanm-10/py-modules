@@ -47,15 +47,28 @@ def file_reader(path, field_num, sep, header=False):
                 if (len(fields) < field_num):
                     raise ValueError('\n\n {} has {} fields on line {} but expected {}'.format(os.path.basename(path), len(fields), line_num + 1, field_num))
                 else:
-                    yield tuple(fields)  
+                    # return fields from 0:field_num as tuple
+                    yield tuple(fields[:field_num])  
 
+class FileOpsTest(unittest.TestCase):
+    ''' Includes all test cases for file operations '''
+
+    def test_file_reader(self):
+        ''' test file_reader() '''
+
+        with self.assertRaises(ValueError) as context:
+            for fields in file_reader('test_file_reader.txt', 6, '|', False):
+                print(fields)
+                
+            self.assertTrue('Caught error' in str(context.exception))
+
+        expected_result = ('John ', ' Doe ', ' 102000 ', ' Age: 36 ', ' NJ')
+        self.assertEqual(next(file_reader('test_file_reader.txt', 5, '|', True)), expected_result)
 
 if __name__ == "__main__":
     ''' This is executed when run from the command line '''
 
     # datetime_calculator()
     
-    for fields in file_reader('test_file_reader.txt', 5, '|'):
-        print(fields)
+    unittest.main(exit=False, verbosity=2)
     
-    # unittest.main(exit=False, verbosity=2)
