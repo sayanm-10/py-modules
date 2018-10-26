@@ -9,6 +9,7 @@ import unittest
 import os
 from datetime import datetime, timedelta
 
+
 def datetime_calculator():
     ''' A helper to demonstrate the datetime module '''
 
@@ -48,7 +49,8 @@ def file_reader(path, field_num, sep, header=False):
                     raise ValueError('\n\n {} has {} fields on line {} but expected {}'.format(os.path.basename(path), len(fields), line_num + 1, field_num))
                 else:
                     # return fields from 0:field_num as tuple
-                    yield tuple(fields[:field_num])  
+                    yield tuple(fields[:field_num])
+
 
 class FileOpsTest(unittest.TestCase):
     ''' Includes all test cases for file operations '''
@@ -56,12 +58,15 @@ class FileOpsTest(unittest.TestCase):
     def test_file_reader(self):
         ''' test file_reader() '''
 
+        # test ValueError is raised if expected number
+        # of fields exceeds the actual fields
         with self.assertRaises(ValueError) as context:
             for fields in file_reader('test_file_reader.txt', 6, '|', False):
                 print(fields)
                 
             self.assertTrue('Caught error' in str(context.exception))
 
+        # match the first returned tuple
         expected_result = ('John ', ' Doe ', ' 102000 ', ' Age: 36 ', ' NJ')
         self.assertEqual(next(file_reader('test_file_reader.txt', 5, '|', True)), expected_result)
 
@@ -71,4 +76,3 @@ if __name__ == "__main__":
     # datetime_calculator()
     
     unittest.main(exit=False, verbosity=2)
-    
