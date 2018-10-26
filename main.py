@@ -8,7 +8,7 @@ __license__ = "MIT"
 import unittest
 import os
 from datetime import datetime, timedelta
-from directory_analyzer import print_dir_summary
+from directory_analyzer import print_dir_summary, analyze_file
 
 
 def datetime_calculator():
@@ -70,6 +70,21 @@ class FileOpsTest(unittest.TestCase):
         # match the first returned tuple
         expected_result = ('John ', ' Doe ', ' 102000 ', ' Age: 36 ', ' NJ')
         self.assertEqual(next(file_reader('test_file_reader.txt', 5, '|', True)), expected_result)
+
+    def test_print_dir_summary(self):
+        ''' test individual o/p of print_dir_summary '''
+
+        try:
+            fp = open('main.py', 'r')
+        except FileNotFoundError:
+            print('Unit test needs to run on main.py')
+        else:
+            classes, funcs, lines, chars = analyze_file(fp)
+
+            self.assertEqual(classes, 1)
+            self.assertEqual(funcs, 4)
+            self.assertEqual(lines, 100)
+            self.assertTrue(chars > 1)
 
 
 if __name__ == "__main__":
